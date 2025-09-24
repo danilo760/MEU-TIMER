@@ -1,58 +1,485 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background: #111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  #timer {
-    font-family: Arial, sans-serif;
-    font-size: 96px;
-    padding: 20px 40px;
-    background: #222;
-    color: #0f0;
-    border-radius: 20px;
-    box-shadow: 0 0 20px #0f0;
-  }
-</style>
-</head>
-<body>
-  <div id="timer">00:00</div>
-<script>
-(function(){
-  const el = document.getElementById("timer");
+<p>Vou criar um código HTML, CSS e JavaScript para um Timer Configurável com as funcionalidades que você solicitou:</p>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pt-br<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span></span>Timer Configurável<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">&gt;</span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">body</span> <span class="token punctuation">{</span>
+            <span class="token property">font-family</span><span class="token punctuation">:</span> Arial<span class="token punctuation">,</span> sans-serif<span class="token punctuation">;</span>
+            <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+            <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 100vh<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #f5f5f5<span class="token punctuation">;</span>
+            <span class="token property">margin</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.timer-container</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 30px<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+            <span class="token property">box-shadow</span><span class="token punctuation">:</span> 0 4px 8px <span class="token function">rgba</span><span class="token punctuation">(</span>0<span class="token punctuation">,</span> 0<span class="token punctuation">,</span> 0<span class="token punctuation">,</span> 0.1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">h1</span> <span class="token punctuation">{</span>
+            <span class="token property">margin-top</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> #333<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.config-section</span> <span class="token punctuation">{</span>
+            <span class="token property">margin-bottom</span><span class="token punctuation">:</span> 20px<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">label</span> <span class="token punctuation">{</span>
+            <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span>
+            <span class="token property">margin-bottom</span><span class="token punctuation">:</span> 5px<span class="token punctuation">;</span>
+            <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">input[type="number"]</span> <span class="token punctuation">{</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 60px<span class="token punctuation">;</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 8px<span class="token punctuation">;</span>
+            <span class="token property">border</span><span class="token punctuation">:</span> 1px solid #ddd<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 4px<span class="token punctuation">;</span>
+            <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.time-display</span> <span class="token punctuation">{</span>
+            <span class="token property">font-size</span><span class="token punctuation">:</span> 48px<span class="token punctuation">;</span>
+            <span class="token property">margin</span><span class="token punctuation">:</span> 20px 0<span class="token punctuation">;</span>
+            <span class="token property">font-family</span><span class="token punctuation">:</span> monospace<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.buttons</span> <span class="token punctuation">{</span>
+            <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+            <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">button</span> <span class="token punctuation">{</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 10px 20px<span class="token punctuation">;</span>
+            <span class="token property">border</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 4px<span class="token punctuation">;</span>
+            <span class="token property">cursor</span><span class="token punctuation">:</span> pointer<span class="token punctuation">;</span>
+            <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span>
+            <span class="token property">transition</span><span class="token punctuation">:</span> background-color 0.3s<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">#startBtn</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #4CAF50<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">#stopBtn</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #f44336<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">#resetBtn</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #2196F3<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">button:hover</span> <span class="token punctuation">{</span>
+            <span class="token property">opacity</span><span class="token punctuation">:</span> 0.9<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">button:disabled</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #cccccc<span class="token punctuation">;</span>
+            <span class="token property">cursor</span><span class="token punctuation">:</span> not-allowed<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>timer-container<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">&gt;</span></span>Timer Configurável<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>config-section<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>initialTime<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Tempo Inicial (segundos):<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>number<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>initialTime<span class="token punctuation">"</span></span> <span class="token attr-name">min</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>config-section<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>addTime<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Segundos para Adicionar:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>number<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>addTime<span class="token punctuation">"</span></span> <span class="token attr-name">min</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>time-display<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>display<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>00:00<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>buttons<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>startBtn<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Iniciar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stopBtn<span class="token punctuation">"</span></span> <span class="token attr-name">disabled</span><span class="token punctuation">&gt;</span></span>Parar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>resetBtn<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Resetar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
 
-  // lê parâmetros da URL
-  const params = new URLSearchParams(window.location.search);
-  let total = parseInt(params.get("start") || "60", 10); // tempo inicial em segundos
-  const extra = parseInt(params.get("extra") || "10", 10); // tempo extra quando zerar
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+        document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">const</span> initialTimeInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'initialTime'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> addTimeInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'addTime'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> display <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'display'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> startBtn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'startBtn'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> stopBtn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'stopBtn'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> resetBtn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'resetBtn'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            <span class="token keyword">let</span> timer<span class="token punctuation">;</span>
+            <span class="token keyword">let</span> totalSeconds <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">let</span> isRunning <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            
+            <span class="token comment">// Formata o tempo para exibição (MM:SS)</span>
+            <span class="token keyword">function</span> <span class="token function">formatTime</span><span class="token punctuation">(</span><span class="token parameter">seconds</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">const</span> mins <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>seconds <span class="token operator">/</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">const</span> secs <span class="token operator">=</span> seconds <span class="token operator">%</span> <span class="token number">60</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>mins<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>secs<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Atualiza o display</span>
+            <span class="token keyword">function</span> <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                display<span class="token punctuation">.</span>textContent <span class="token operator">=</span> <span class="token function">formatTime</span><span class="token punctuation">(</span>totalSeconds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Inicia o timer</span>
+            <span class="token keyword">function</span> <span class="token function">startTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>isRunning<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+                
+                isRunning <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                startBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                stopBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                
+                timer <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>totalSeconds <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token function">clearInterval</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        isRunning <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                        startBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                        stopBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                        <span class="token keyword">return</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                    
+                    totalSeconds<span class="token operator">--</span><span class="token punctuation">;</span>
+                    <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Para o timer</span>
+            <span class="token keyword">function</span> <span class="token function">stopTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">clearInterval</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                isRunning <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                startBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                stopBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Reseta o timer</span>
+            <span class="token keyword">function</span> <span class="token function">resetTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">stopTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                totalSeconds <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>initialTimeInput<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Adiciona tempo</span>
+            <span class="token keyword">function</span> <span class="token function">addTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">const</span> secondsToAdd <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>addTimeInput<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                totalSeconds <span class="token operator">+=</span> secondsToAdd<span class="token punctuation">;</span>
+                <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Event listeners</span>
+            startBtn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> startTimer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            stopBtn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> stopTimer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            resetBtn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> resetTimer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            initialTimeInput<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isRunning<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token function">resetTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            addTimeInput<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parseInt</span><span class="token punctuation">(</span>addTimeInput<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token function">addTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    addTimeInput<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token string">'0'</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            <span class="token comment">// Inicializa</span>
+            <span class="token function">resetTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<h3>Funcionalidades do Timer:</h3>
+<ol>
+<li><p><strong>Configuração Inicial</strong>:</p>
+<ul>
+<li>Você pode definir o tempo inicial em segundos</li>
+<li>Pode adicionar mais segundos ao tempo atual</li>
+</ul>
+</li>
+<li><p><strong>Controles</strong>:</p>
+<ul>
+<li><strong>Iniciar</strong>: Começa a contagem regressiva</li>
+<li><strong>Parar</strong>: Pausa o timer</li>
+<li><strong>Resetar</strong>: Volta ao tempo inicial configurado</li>
+</ul>
+</li>
+<li><p><strong>Display</strong>:</p>
+<ul>
+<li>Mostra o tempo no formato MM:SS</li>
+<li>Atualiza em tempo real durante a contagem</li>
+</ul>
+</li>
+<li><p><strong>Funcionamento</strong>:</p>
+<ul>
+<li>Quando você altera o tempo inicial e clica em “Resetar”, o timer é atualizado</li>
+<li>Ao adicionar segundos, o valor é somado ao tempo atual e o campo é resetado para 0</li>
+</ul>
+</li>
+</ol>
+<p>Você pode copiar este código para um arquivo HTML e abri-lo no navegador para usar o timer.</p>
+<div class="message-actions-pt"><button class="message-action-btn-pt copy-btn" aria-label="Copiar mensagem">Copiar</button><button class="message-action-btn-pt copy-html-btn" aria-label="Copiar HTML da mensagem">Copiar HTML</button></div><p>Vou criar um código HTML, CSS e JavaScript para um Timer Configurável com as funcionalidades que você solicitou:</p>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pt-br<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span></span>Timer Configurável<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">&gt;</span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">body</span> <span class="token punctuation">{</span>
+            <span class="token property">font-family</span><span class="token punctuation">:</span> Arial<span class="token punctuation">,</span> sans-serif<span class="token punctuation">;</span>
+            <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+            <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 100vh<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #f5f5f5<span class="token punctuation">;</span>
+            <span class="token property">margin</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.timer-container</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 30px<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+            <span class="token property">box-shadow</span><span class="token punctuation">:</span> 0 4px 8px <span class="token function">rgba</span><span class="token punctuation">(</span>0<span class="token punctuation">,</span> 0<span class="token punctuation">,</span> 0<span class="token punctuation">,</span> 0.1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">h1</span> <span class="token punctuation">{</span>
+            <span class="token property">margin-top</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> #333<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.config-section</span> <span class="token punctuation">{</span>
+            <span class="token property">margin-bottom</span><span class="token punctuation">:</span> 20px<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">label</span> <span class="token punctuation">{</span>
+            <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span>
+            <span class="token property">margin-bottom</span><span class="token punctuation">:</span> 5px<span class="token punctuation">;</span>
+            <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">input[type="number"]</span> <span class="token punctuation">{</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 60px<span class="token punctuation">;</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 8px<span class="token punctuation">;</span>
+            <span class="token property">border</span><span class="token punctuation">:</span> 1px solid #ddd<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 4px<span class="token punctuation">;</span>
+            <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.time-display</span> <span class="token punctuation">{</span>
+            <span class="token property">font-size</span><span class="token punctuation">:</span> 48px<span class="token punctuation">;</span>
+            <span class="token property">margin</span><span class="token punctuation">:</span> 20px 0<span class="token punctuation">;</span>
+            <span class="token property">font-family</span><span class="token punctuation">:</span> monospace<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">.buttons</span> <span class="token punctuation">{</span>
+            <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+            <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+            <span class="token property">gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">button</span> <span class="token punctuation">{</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 10px 20px<span class="token punctuation">;</span>
+            <span class="token property">border</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 4px<span class="token punctuation">;</span>
+            <span class="token property">cursor</span><span class="token punctuation">:</span> pointer<span class="token punctuation">;</span>
+            <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span>
+            <span class="token property">transition</span><span class="token punctuation">:</span> background-color 0.3s<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">#startBtn</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #4CAF50<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">#stopBtn</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #f44336<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">#resetBtn</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #2196F3<span class="token punctuation">;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">button:hover</span> <span class="token punctuation">{</span>
+            <span class="token property">opacity</span><span class="token punctuation">:</span> 0.9<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token selector">button:disabled</span> <span class="token punctuation">{</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #cccccc<span class="token punctuation">;</span>
+            <span class="token property">cursor</span><span class="token punctuation">:</span> not-allowed<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>timer-container<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">&gt;</span></span>Timer Configurável<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>config-section<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>initialTime<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Tempo Inicial (segundos):<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>number<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>initialTime<span class="token punctuation">"</span></span> <span class="token attr-name">min</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>config-section<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>addTime<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Segundos para Adicionar:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>number<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>addTime<span class="token punctuation">"</span></span> <span class="token attr-name">min</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>time-display<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>display<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>00:00<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>buttons<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>startBtn<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Iniciar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stopBtn<span class="token punctuation">"</span></span> <span class="token attr-name">disabled</span><span class="token punctuation">&gt;</span></span>Parar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>resetBtn<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Resetar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
 
-  function formatTime(sec){
-    const m = Math.floor(sec/60);
-    const s = sec % 60;
-    return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-  }
-
-  function tick(){
-    el.textContent = formatTime(total);
-    total--;
-
-    if(total < 0){
-      total = extra; // adiciona extra quando zerar
-    }
-  }
-
-  el.textContent = formatTime(total);
-  setInterval(tick, 1000);
-})();
-</script>
-</body>
-</html>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+        document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">const</span> initialTimeInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'initialTime'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> addTimeInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'addTime'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> display <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'display'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> startBtn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'startBtn'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> stopBtn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'stopBtn'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">const</span> resetBtn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'resetBtn'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            <span class="token keyword">let</span> timer<span class="token punctuation">;</span>
+            <span class="token keyword">let</span> totalSeconds <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">let</span> isRunning <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            
+            <span class="token comment">// Formata o tempo para exibição (MM:SS)</span>
+            <span class="token keyword">function</span> <span class="token function">formatTime</span><span class="token punctuation">(</span><span class="token parameter">seconds</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">const</span> mins <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>seconds <span class="token operator">/</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">const</span> secs <span class="token operator">=</span> seconds <span class="token operator">%</span> <span class="token number">60</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>mins<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>secs<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Atualiza o display</span>
+            <span class="token keyword">function</span> <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                display<span class="token punctuation">.</span>textContent <span class="token operator">=</span> <span class="token function">formatTime</span><span class="token punctuation">(</span>totalSeconds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Inicia o timer</span>
+            <span class="token keyword">function</span> <span class="token function">startTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>isRunning<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+                
+                isRunning <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                startBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                stopBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                
+                timer <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>totalSeconds <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token function">clearInterval</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        isRunning <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                        startBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                        stopBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                        <span class="token keyword">return</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                    
+                    totalSeconds<span class="token operator">--</span><span class="token punctuation">;</span>
+                    <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Para o timer</span>
+            <span class="token keyword">function</span> <span class="token function">stopTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">clearInterval</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                isRunning <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                startBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+                stopBtn<span class="token punctuation">.</span>disabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Reseta o timer</span>
+            <span class="token keyword">function</span> <span class="token function">resetTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">stopTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                totalSeconds <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>initialTimeInput<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Adiciona tempo</span>
+            <span class="token keyword">function</span> <span class="token function">addTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">const</span> secondsToAdd <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>addTimeInput<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                totalSeconds <span class="token operator">+=</span> secondsToAdd<span class="token punctuation">;</span>
+                <span class="token function">updateDisplay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            
+            <span class="token comment">// Event listeners</span>
+            startBtn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> startTimer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            stopBtn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> stopTimer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            resetBtn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> resetTimer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            initialTimeInput<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isRunning<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token function">resetTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            addTimeInput<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parseInt</span><span class="token punctuation">(</span>addTimeInput<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token function">addTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    addTimeInput<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token string">'0'</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+            <span class="token comment">// Inicializa</span>
+            <span class="token function">resetTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<h3>Funcionalidades do Timer:</h3>
+<ol>
+<li><p><strong>Configuração Inicial</strong>:</p>
+<ul>
+<li>Você pode definir o tempo inicial em segundos</li>
+<li>Pode adicionar mais segundos ao tempo atual</li>
+</ul>
+</li>
+<li><p><strong>Controles</strong>:</p>
+<ul>
+<li><strong>Iniciar</strong>: Começa a contagem regressiva</li>
+<li><strong>Parar</strong>: Pausa o timer</li>
+<li><strong>Resetar</strong>: Volta ao tempo inicial configurado</li>
+</ul>
+</li>
+<li><p><strong>Display</strong>:</p>
+<ul>
+<li>Mostra o tempo no formato MM:SS</li>
+<li>Atualiza em tempo real durante a contagem</li>
+</ul>
+</li>
+<li><p><strong>Funcionamento</strong>:</p>
+<ul>
+<li>Quando você altera o tempo inicial e clica em “Resetar”, o timer é atualizado</li>
+<li>Ao adicionar segundos, o valor é somado ao tempo atual e o campo é resetado para 0</li>
+</ul>
+</li>
+</ol>
+<p>Você pode copiar este código para um arquivo HTML e abri-lo no navegador para usar o timer.</p>
+<div class="message-actions-pt"><button class="message-action-btn-pt copy-btn" aria-label="Copiar mensagem">Copiar</button><button class="message-action-btn-pt copy-html-btn" aria-label="Copiar HTML da mensagem">Copiar HTML</button></div>
